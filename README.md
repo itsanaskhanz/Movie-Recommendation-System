@@ -11,7 +11,7 @@ A content-based movie recommender built on the [TMDB 5000 Movie Dataset](https:/
 
 ## How it works
 
-1. **Data prep** (`model.ipynb`): Merge TMDB movies and credits, clean JSON fields (genres, keywords, cast, crew), and build a `tags` string per movie.
+1. **Data prep** (`notebooks/analysis.ipynb`): Merge TMDB movies and credits, clean JSON fields (genres, keywords, cast, crew), and build a `tags` string per movie.
 2. **Text processing**: Lowercase tokens, Porter stemming (NLTK), and join into one document per movie.
 3. **Vectorization**: `CountVectorizer` (max 5,000 features, English stop words) turns tags into sparse vectors.
 4. **Similarity**: Cosine similarity between all movie vectors is stored in `similarity.pkl`.
@@ -21,16 +21,21 @@ A content-based movie recommender built on the [TMDB 5000 Movie Dataset](https:/
 
 ```
 Movie-Recommendation-System/
-├── app.py              # Streamlit recommendation UI
-├── model.ipynb         # Data processing and model training
-├── main.py             # Placeholder entry point
-├── movies.pkl          # Processed movie dataframe (generated)
-├── similarity.pkl      # Cosine similarity matrix (generated)
-├── pyproject.toml      # Dependencies (uv/pip)
-└── .python-version     # Python 3.13
+├── app.py                      # Streamlit recommendation UI
+├── main.py                     # Placeholder entry point
+├── data/
+│   ├── tmdb_5000_movies.csv    # TMDB movie metadata (download separately)
+│   └── tmdb_5000_credits.csv   # TMDB cast/crew data (download separately)
+├── notebooks/
+│   └── analysis.ipynb          # Data processing and model training
+├── movies.pkl                  # Processed movie dataframe (generated)
+├── similarity.pkl              # Cosine similarity matrix (generated)
+├── pyproject.toml              # Dependencies (uv/pip)
+├── uv.lock                     # Locked dependency versions (uv)
+└── .python-version             # Python 3.13
 ```
 
-> `*.pkl` files are gitignored. Generate them by running `model.ipynb`, or obtain them from a teammate/release.
+> `*.pkl` files are gitignored. Generate them by running `notebooks/analysis.ipynb`, or obtain them from a teammate/release.
 
 ## Requirements
 
@@ -64,14 +69,14 @@ pip install -e .
 
 ### 3. Download the dataset
 
-Place these CSV files in the project root (from [Kaggle — TMDB 5000](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata) or equivalent):
+Place these CSV files in the `data/` directory (from [Kaggle — TMDB 5000](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata) or equivalent):
 
-- `tmdb_5000_movies.csv`
-- `tmdb_5000_credits.csv`
+- `data/tmdb_5000_movies.csv`
+- `data/tmdb_5000_credits.csv`
 
 ### 4. Train the model (if you don't have `.pkl` files)
 
-Open and run all cells in `model.ipynb`. This creates:
+Open and run all cells in `notebooks/analysis.ipynb`. This creates in the project root:
 
 - `movies.pkl` — dataframe with `movie_id`, `title`, and processed `tags`
 - `similarity.pkl` — pairwise cosine similarity matrix (~180 MB)
